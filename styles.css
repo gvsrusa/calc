@@ -1,0 +1,797 @@
+/* CSS Custom Properties for Theming */
+:root {
+    /* Color Palette */
+    --primary-bg: #1e1e1e;
+    --secondary-bg: #2d2d2d;
+    --display-bg: #000000;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-display: #ffffff;
+    
+    /* Button Colors */
+    --btn-number-bg: #333333;
+    --btn-number-hover: #404040;
+    --btn-number-active: #4d4d4d;
+    
+    --btn-operator-bg: #ff9500;
+    --btn-operator-hover: #ffad33;
+    --btn-operator-active: #cc7700;
+    
+    --btn-function-bg: #a6a6a6;
+    --btn-function-hover: #b3b3b3;
+    --btn-function-active: #999999;
+    
+    --btn-equals-bg: #ff9500;
+    --btn-equals-hover: #ffad33;
+    --btn-equals-active: #cc7700;
+    
+    /* Spacing and Sizing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    --btn-size: 80px;
+    --btn-size-mobile: 60px;
+    --btn-border-radius: 8px;
+    
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-size-display: 2.5rem;
+    --font-size-btn: 1.25rem;
+    --font-weight-normal: 400;
+    --font-weight-bold: 600;
+    
+    /* Shadows and Effects */
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-medium: 0.3s ease;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+
+/* Accessibility Styles */
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--btn-operator-bg);
+    color: var(--text-primary);
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1000;
+    font-weight: bold;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* Enhanced focus indicators */
+*:focus {
+    outline: 2px solid var(--btn-operator-bg);
+    outline-offset: 2px;
+}
+
+/* High contrast focus for better visibility */
+@media (prefers-contrast: high) {
+    *:focus {
+        outline: 3px solid #ffffff;
+        outline-offset: 2px;
+    }
+}
+
+/* Calculator Container */
+.calculator-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.calculator {
+    background-color: var(--secondary-bg);
+    border-radius: var(--btn-border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-heavy);
+}
+
+/* Display Section */
+.display-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.display {
+    background-color: var(--display-bg);
+    border-radius: var(--btn-border-radius);
+    padding: var(--spacing-lg);
+    text-align: right;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.display-text {
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-display);
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+/* Error State for Display */
+.display.error {
+    background-color: #4a0000;
+    border: 2px solid #ff4444;
+}
+
+.display.error .display-text {
+    color: #ff6666;
+    animation: errorPulse 0.5s ease-in-out;
+}
+
+@keyframes errorPulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Button Grid */
+.button-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.button-grid [role="row"] {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-sm);
+}
+
+/* Button Base Styles */
+.btn {
+    height: var(--btn-size);
+    border: none;
+    border-radius: var(--btn-border-radius);
+    font-size: var(--font-size-btn);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    /* Touch optimization */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    /* Improve touch responsiveness */
+    touch-action: manipulation;
+    /* Prevent text selection on double tap */
+    -webkit-user-drag: none;
+}
+
+.btn:focus {
+    outline: 2px solid var(--btn-operator-bg);
+    outline-offset: 2px;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* Number Buttons */
+.btn-number {
+    background-color: var(--btn-number-bg);
+    color: var(--text-primary);
+}
+
+.btn-number:hover {
+    background-color: var(--btn-number-hover);
+}
+
+.btn-number:active {
+    background-color: var(--btn-number-active);
+}
+
+/* Zero Button (spans 2 columns) */
+.btn-zero {
+    grid-column: span 2;
+}
+
+/* Operator Buttons */
+.btn-operator {
+    background-color: var(--btn-operator-bg);
+    color: var(--text-primary);
+}
+
+.btn-operator:hover {
+    background-color: var(--btn-operator-hover);
+}
+
+.btn-operator:active {
+    background-color: var(--btn-operator-active);
+}
+
+/* Function Buttons */
+.btn-function {
+    background-color: var(--btn-function-bg);
+    color: var(--primary-bg);
+}
+
+.btn-function:hover {
+    background-color: var(--btn-function-hover);
+}
+
+.btn-function:active {
+    background-color: var(--btn-function-active);
+}
+
+/* Equals Button */
+.btn-equals {
+    background-color: var(--btn-equals-bg);
+    color: var(--text-primary);
+}
+
+.btn-equals:hover {
+    background-color: var(--btn-equals-hover);
+}
+
+.btn-equals:active {
+    background-color: var(--btn-equals-active);
+}
+
+/* Button State Classes for Visual Feedback */
+.btn.pressed {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+}
+
+.btn.clicked {
+    animation: clickPulse 0.15s ease-out;
+}
+
+.btn.operator-active {
+    background-color: var(--text-primary) !important;
+    color: var(--btn-operator-bg) !important;
+    box-shadow: inset 0 0 0 2px var(--btn-operator-bg);
+}
+
+/* Keyboard-specific feedback */
+.btn.keyboard-active {
+    box-shadow: 0 0 0 3px var(--btn-operator-bg);
+    filter: brightness(1.1);
+}
+
+/* Focus indicators for accessibility */
+.btn.focused {
+    outline: 2px solid var(--btn-operator-bg);
+    outline-offset: 2px;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--btn-operator-bg);
+    outline-offset: 2px;
+}
+
+@keyframes clickPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* History Section */
+.history-section {
+    background-color: var(--primary-bg);
+    border-radius: var(--btn-border-radius);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    display: none; /* Initially hidden */
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.history-header h2 {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.btn-clear-history {
+    background-color: var(--btn-function-bg);
+    color: var(--primary-bg);
+    border: none;
+    border-radius: 4px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.btn-clear-history:hover {
+    background-color: var(--btn-function-hover);
+}
+
+.history-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: var(--spacing-sm);
+    border-radius: 4px;
+    margin-bottom: var(--spacing-xs);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    font-size: 0.875rem;
+}
+
+.history-item:hover {
+    background-color: var(--btn-number-bg);
+}
+
+.history-expression {
+    color: var(--text-secondary);
+}
+
+.history-result {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Responsive Design and Mobile Optimization */
+
+/* Desktop and Large Screens (> 1024px) */
+@media (min-width: 1025px) {
+    .calculator-container {
+        max-width: 450px;
+    }
+    
+    :root {
+        --btn-size: 90px;
+        --font-size-display: 3rem;
+        --font-size-btn: 1.5rem;
+    }
+    
+    .calculator {
+        padding: var(--spacing-xl);
+    }
+    
+    .display {
+        min-height: 100px;
+        padding: var(--spacing-xl);
+    }
+    
+    /* Enhanced hover effects for desktop */
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+    }
+}
+
+/* Tablet Breakpoint (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .calculator-container {
+        max-width: 420px;
+    }
+    
+    :root {
+        --btn-size: 85px;
+        --font-size-display: 2.75rem;
+        --font-size-btn: 1.375rem;
+    }
+    
+    .calculator {
+        padding: var(--spacing-lg);
+    }
+    
+    .display {
+        min-height: 90px;
+        padding: var(--spacing-lg);
+    }
+    
+    /* Optimize for tablet touch */
+    .btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+/* Mobile Landscape (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    body {
+        padding: var(--spacing-sm);
+    }
+    
+    .calculator-container {
+        max-width: 380px;
+    }
+    
+    :root {
+        --btn-size: 70px;
+        --font-size-display: 2.25rem;
+        --font-size-btn: 1.125rem;
+    }
+    
+    .calculator {
+        padding: var(--spacing-md);
+    }
+    
+    .display {
+        min-height: 70px;
+        padding: var(--spacing-md);
+    }
+    
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .button-grid {
+        gap: var(--spacing-xs);
+    }
+    
+    .button-grid [role="row"] {
+        gap: var(--spacing-xs);
+    }
+}
+
+/* Mobile Portrait (320px - 480px) */
+@media (max-width: 480px) {
+    body {
+        padding: var(--spacing-xs);
+        align-items: flex-start;
+        padding-top: var(--spacing-md);
+    }
+    
+    .calculator-container {
+        width: 100%;
+        max-width: 350px;
+    }
+    
+    :root {
+        --btn-size: 65px;
+        --font-size-display: 2rem;
+        --font-size-btn: 1rem;
+        --spacing-sm: 0.375rem;
+    }
+    
+    .calculator {
+        padding: var(--spacing-md);
+        border-radius: 12px;
+    }
+    
+    .display {
+        padding: var(--spacing-md);
+        min-height: 65px;
+        border-radius: 8px;
+    }
+    
+    .btn {
+        min-height: 44px; /* Apple's minimum touch target size */
+        min-width: 44px;
+        border-radius: 6px;
+    }
+    
+    .button-grid {
+        gap: var(--spacing-xs);
+    }
+    
+    /* Optimize history section for mobile */
+    .history-section {
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-sm);
+    }
+    
+    .history-list {
+        max-height: 150px;
+    }
+}
+
+/* Small Mobile Devices (< 320px) */
+@media (max-width: 320px) {
+    .calculator-container {
+        max-width: 300px;
+    }
+    
+    :root {
+        --btn-size: 55px;
+        --font-size-display: 1.75rem;
+        --font-size-btn: 0.875rem;
+    }
+    
+    .calculator {
+        padding: var(--spacing-sm);
+    }
+    
+    .display {
+        min-height: 55px;
+        padding: var(--spacing-sm);
+    }
+    
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .button-grid {
+        gap: 0.25rem;
+    }
+    
+    .button-grid [role="row"] {
+        gap: 0.25rem;
+    }
+}
+
+/* Landscape Orientation Support for Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding: var(--spacing-xs);
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+    
+    .calculator-container {
+        max-width: 450px;
+        width: 100%;
+    }
+    
+    :root {
+        --btn-size: 50px;
+        --font-size-display: 1.5rem;
+        --font-size-btn: 0.875rem;
+    }
+    
+    .calculator {
+        padding: var(--spacing-sm);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .display {
+        min-height: 50px;
+        padding: var(--spacing-sm);
+    }
+    
+    .btn {
+        min-height: 40px;
+        min-width: 40px;
+    }
+    
+    .button-grid {
+        gap: 0.25rem;
+    }
+    
+    /* Hide or minimize history in landscape to save space */
+    .history-section {
+        display: none;
+    }
+    
+    /* Compact layout for landscape */
+    .display-section {
+        margin-bottom: var(--spacing-sm);
+    }
+}
+
+/* Very Small Landscape (phones in landscape < 568px width) */
+@media (max-width: 568px) and (orientation: landscape) and (max-height: 320px) {
+    :root {
+        --btn-size: 45px;
+        --font-size-display: 1.25rem;
+        --font-size-btn: 0.75rem;
+    }
+    
+    .calculator {
+        padding: 0.25rem;
+    }
+    
+    .display {
+        min-height: 40px;
+        padding: 0.5rem;
+    }
+    
+    .btn {
+        min-height: 36px;
+        min-width: 36px;
+    }
+    
+    .button-grid {
+        gap: 0.125rem;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-bg: #000000;
+        --secondary-bg: #1a1a1a;
+        --text-primary: #ffffff;
+        --btn-number-bg: #333333;
+        --btn-operator-bg: #0066cc;
+        --btn-function-bg: #ffffff;
+    }
+    
+    .btn-function {
+        color: #000000;
+    }
+}
+
+/* Mobile Touch Optimization */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .btn:hover {
+        background-color: inherit;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .btn-number:hover {
+        background-color: var(--btn-number-bg);
+    }
+    
+    .btn-operator:hover {
+        background-color: var(--btn-operator-bg);
+    }
+    
+    .btn-function:hover {
+        background-color: var(--btn-function-bg);
+    }
+    
+    .btn-equals:hover {
+        background-color: var(--btn-equals-bg);
+    }
+    
+    .history-item:hover {
+        background-color: transparent;
+    }
+    
+    .btn-clear-history:hover {
+        background-color: var(--btn-function-bg);
+    }
+    
+    /* Enhanced touch feedback */
+    .btn:active {
+        transform: scale(0.92);
+        filter: brightness(0.85);
+        transition: all 0.1s ease;
+    }
+    
+    /* Larger touch targets for better accessibility */
+    .btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+/* iOS Safari specific optimizations */
+@supports (-webkit-touch-callout: none) {
+    /* Prevent zoom on double tap */
+    .btn {
+        touch-action: manipulation;
+    }
+    
+    /* Fix iOS Safari viewport issues */
+    body {
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    /* Improve scrolling on iOS */
+    .history-list {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Android Chrome specific optimizations */
+@media screen and (-webkit-min-device-pixel-ratio: 1) {
+    /* Improve rendering on Android */
+    .btn {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* High DPI/Retina Display Support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .btn {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Sharper borders on high DPI */
+    .calculator {
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .display {
+        border: 0.5px solid rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition-fast: none;
+        --transition-medium: none;
+    }
+    
+    .btn:active {
+        transform: none;
+    }
+    
+    .btn.clicked {
+        animation: none;
+    }
+    
+    .display.error .display-text {
+        animation: none;
+    }
+}
+/*
+* Additional responsive styles for button grid rows 
+*/
+@media (max-width: 320px) {
+    .button-grid [role="row"] {
+        gap: 0.25rem;
+    }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .button-grid [role="row"] {
+        gap: 0.25rem;
+    }
+}
+
+@media (max-width: 568px) and (orientation: landscape) and (max-height: 320px) {
+    .button-grid [role="row"] {
+        gap: 0.125rem;
+    }
+}

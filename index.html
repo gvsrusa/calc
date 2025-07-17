@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Browser Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Skip to main content link for screen readers -->
+    <a href="#calculator-main" class="skip-link">Skip to calculator</a>
+    
+    <main class="calculator-container" id="calculator-main">
+        <div class="calculator" role="application" aria-label="Calculator application" tabindex="0">
+            <!-- Calculator Display -->
+            <section class="display-section" role="region" aria-label="Calculator display">
+                <div class="display" id="display" aria-live="polite" aria-atomic="true">
+                    <div class="display-text" id="display-text" role="textbox" aria-readonly="true" aria-label="Calculator display showing 0">0</div>
+                </div>
+            </section>
+
+            <!-- Calculator Button Grid -->
+            <section class="button-grid" role="grid" aria-label="Calculator buttons" aria-rowcount="5" aria-colcount="4">
+                <!-- Row 1: Clear and Operations -->
+                <div role="row" aria-rowindex="1">
+                    <button class="btn btn-function" data-action="clear" role="gridcell" aria-colindex="1" aria-label="Clear all calculations" aria-describedby="clear-desc">C</button>
+                    <button class="btn btn-function" data-action="clear-entry" role="gridcell" aria-colindex="2" aria-label="Clear current entry" aria-describedby="clear-entry-desc">CE</button>
+                    <button class="btn btn-function" data-action="backspace" role="gridcell" aria-colindex="3" aria-label="Backspace, delete last digit" aria-describedby="backspace-desc">⌫</button>
+                    <button class="btn btn-operator" data-action="divide" role="gridcell" aria-colindex="4" aria-label="Divide operation" aria-describedby="divide-desc" aria-pressed="false">÷</button>
+                </div>
+
+                <!-- Row 2: Numbers and Multiply -->
+                <div role="row" aria-rowindex="2">
+                    <button class="btn btn-number" data-value="7" role="gridcell" aria-colindex="1" aria-label="Number seven">7</button>
+                    <button class="btn btn-number" data-value="8" role="gridcell" aria-colindex="2" aria-label="Number eight">8</button>
+                    <button class="btn btn-number" data-value="9" role="gridcell" aria-colindex="3" aria-label="Number nine">9</button>
+                    <button class="btn btn-operator" data-action="multiply" role="gridcell" aria-colindex="4" aria-label="Multiply operation" aria-describedby="multiply-desc" aria-pressed="false">×</button>
+                </div>
+
+                <!-- Row 3: Numbers and Subtract -->
+                <div role="row" aria-rowindex="3">
+                    <button class="btn btn-number" data-value="4" role="gridcell" aria-colindex="1" aria-label="Number four">4</button>
+                    <button class="btn btn-number" data-value="5" role="gridcell" aria-colindex="2" aria-label="Number five">5</button>
+                    <button class="btn btn-number" data-value="6" role="gridcell" aria-colindex="3" aria-label="Number six">6</button>
+                    <button class="btn btn-operator" data-action="subtract" role="gridcell" aria-colindex="4" aria-label="Subtract operation" aria-describedby="subtract-desc" aria-pressed="false">-</button>
+                </div>
+
+                <!-- Row 4: Numbers and Add -->
+                <div role="row" aria-rowindex="4">
+                    <button class="btn btn-number" data-value="1" role="gridcell" aria-colindex="1" aria-label="Number one">1</button>
+                    <button class="btn btn-number" data-value="2" role="gridcell" aria-colindex="2" aria-label="Number two">2</button>
+                    <button class="btn btn-number" data-value="3" role="gridcell" aria-colindex="3" aria-label="Number three">3</button>
+                    <button class="btn btn-operator" data-action="add" role="gridcell" aria-colindex="4" aria-label="Add operation" aria-describedby="add-desc" aria-pressed="false">+</button>
+                </div>
+
+                <!-- Row 5: Zero, Decimal, and Equals -->
+                <div role="row" aria-rowindex="5">
+                    <button class="btn btn-number btn-zero" data-value="0" role="gridcell" aria-colindex="1" aria-colspan="2" aria-label="Number zero">0</button>
+                    <button class="btn btn-function" data-action="decimal" role="gridcell" aria-colindex="3" aria-label="Decimal point" aria-describedby="decimal-desc">.</button>
+                    <button class="btn btn-equals" data-action="equals" role="gridcell" aria-colindex="4" aria-label="Calculate result, equals" aria-describedby="equals-desc">=</button>
+                </div>
+            </section>
+
+            <!-- Hidden descriptions for screen readers -->
+            <div class="sr-only">
+                <div id="clear-desc">Clears all calculations and resets calculator</div>
+                <div id="clear-entry-desc">Clears only the current number being entered</div>
+                <div id="backspace-desc">Removes the last entered digit</div>
+                <div id="divide-desc">Division operator, divides first number by second number</div>
+                <div id="multiply-desc">Multiplication operator, multiplies two numbers</div>
+                <div id="subtract-desc">Subtraction operator, subtracts second number from first</div>
+                <div id="add-desc">Addition operator, adds two numbers together</div>
+                <div id="decimal-desc">Adds decimal point to current number</div>
+                <div id="equals-desc">Calculates and displays the result of the operation</div>
+            </div>
+
+            <!-- History Section (initially hidden) -->
+            <section class="history-section" id="history-section" role="region" aria-label="Calculation history" aria-expanded="false">
+                <div class="history-header">
+                    <h2 id="history-title">History</h2>
+                    <button class="btn-clear-history" id="clear-history" aria-label="Clear all calculation history" aria-describedby="clear-history-desc">Clear</button>
+                </div>
+                <div class="history-list" id="history-list" role="list" aria-labelledby="history-title" aria-live="polite">
+                    <!-- History items will be dynamically added here -->
+                </div>
+                <div class="sr-only">
+                    <div id="clear-history-desc">Removes all saved calculations from history</div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Live region for screen reader announcements -->
+        <div id="sr-announcements" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+        
+        <!-- Instructions for screen readers -->
+        <div class="sr-only">
+            <div id="calculator-instructions">
+                Calculator instructions: Use number keys 0-9 to enter numbers. 
+                Use plus, minus, asterisk, and slash keys for operations. 
+                Press Enter or equals to calculate. Press Escape or C to clear. 
+                Use arrow keys to navigate between buttons. Press Space to activate buttons.
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
